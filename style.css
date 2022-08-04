@@ -15,6 +15,7 @@
   height: 50px;
   background-color: #6c5ce7;
   margin: 2px;
+  border-radius: 5px;
 }
 
 .valueSquare img {
