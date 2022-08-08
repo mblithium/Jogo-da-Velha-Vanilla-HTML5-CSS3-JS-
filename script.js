@@ -1,5 +1,4 @@
 const squares = document.body.querySelectorAll(".valueSquare");
-// squares.forEach(elem => addEvent(elem, "click"));
 const imagesPath = { "cross": "./img/cross.svg", "circle": "./img/circle.svg" };
 const gameData = ["", "", "", "", "", "", "", "", ""];
 const playerData = { "actualPlayer": ["PlayerOne", "PlayerTwo"], "PlayerOne": "cross", "PlayerTwo": "circle", "isLocked": false };
@@ -10,6 +9,7 @@ function resetValues() {
   gameData.forEach((elem, index) => gameData[index] = "");
   playerScreenValue.innerHTML = "";
   playerData.actualPlayer = ["PlayerOne", "PlayerTwo"];
+  playerData.isLocked = false;
   updateScreen()
 }
 
@@ -22,16 +22,18 @@ function addAction() {
 function playerAction(elem, player) {
   const actPlayer = player;
   const elemId = Number(elem.target.id.slice(2)) - 1;
-  if (!verifySquare(elemId, actPlayer) && elemId != -1) {
-    changeValue((elemId), (playerData.actualPlayer))
-    switchPlayer()
-    updateScreen()
+  if ( !verifySquare(elemId, actPlayer) && elemId != -1 && playerData.isLocked == false) {
+    changeValue((elemId), (playerData.actualPlayer));
+    switchPlayer();
+    verifyRule(gameData);
   };
 }
 
 function verifySquare(id, player) {
-  /* Verifica se o quadrado já está preenchido. */
-  if (gameData[id] === "circle" || gameData[id] === "cross") {     return true; } 
+  if (
+    gameData[id] === "circle" || 
+    gameData[id] === "cross"
+  ) { return true; } 
   else { return false; }
 }
 
@@ -46,7 +48,7 @@ function changeValue(pos) {
 function switchPlayer() {
   if (playerData.actualPlayer === "") { playerData.actualPlayer = ["PlayerOne", "PlayerTwo"]; }
   [playerData.actualPlayer[0], playerData.actualPlayer[1]] = [playerData.actualPlayer[1], playerData.actualPlayer[0]];
-  updateScreen()
+  updateScreen();
 }
 
 function updateScreen() {
@@ -64,6 +66,65 @@ function updateScreen() {
     }
   }
    
+}
+
+function game() {
+  return false;
+}
+
+function verifyRule(gameData) {
+    const gd = gameData;
+    console.log('Esta funcionando.')
+    console.log(gd[0] == gd[1] && gd[1] == gd[2])
+  /*
+    switch (gd) {
+      case (gd[0] == gd[1] && gd[1] == gd[2]):
+        window.alert("VELHA");
+        console.log(gd);
+        break;
+      default: console.log("Nada");
+    }
+  */
+  if (gd[0] == gd[1] && gd[1] == gd[2] && gd[0] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[0])}`)
+    playerData.isLocked = true;
+  }
+  if (gd[3] == gd[4] && gd[3] == gd[5] && gd[3] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[3])}`)
+    playerData.isLocked = true;
+  }
+  if (gd[6] == gd[7] && gd[6] == gd[8] && gd[6] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[6])}`)
+    playerData.isLocked = true;
+  }
+
+  if (gd[0] == gd[3] && gd[0] == gd[6] && gd[0] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[0])}`)
+    playerData.isLocked = true;
+  }
+  if (gd[1] == gd[4] && gd[1] == gd[7] && gd[1] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[1])}`)
+    playerData.isLocked = true;
+  }
+  if (gd[2] == gd[5] && gd[2] == gd[8] && gd[2] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[2])}`)
+    playerData.isLocked = true;
+  }
+
+  if (gd[0] == gd[4] && gd[0] == gd[8] && gd[0] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[0])}`)
+    playerData.isLocked = true;
+  }
+  if (gd[2] == gd[4] && gd[2] == gd[6] && gd[2] != "") {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[2])}`)
+    playerData.isLocked = true;
+  }
+  
+
+  function playerConvert(p) {
+    if (p == "cross") return "Jogador Um";
+    if (p == "circle") return "Jogador Dois";
+  }
 }
 
 

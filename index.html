@@ -10,9 +10,10 @@
 </head>
 
 <body>
-  <h1>Jogo da Velha</h1>
+  <header>
+      <h1>Jogo da Velha</h1>
+  </header>
   
-
  <!--
   This script places a badge on your repl's full-browser view back to your repl's cover
   page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
@@ -20,21 +21,26 @@
   -->
   <script src="https://replit.com/public/js/replit-badge.js" theme="blue" defer></script>
   <main>
-    <div id="paper">
-      <div id="sq1" class="valueSquare"></div>
-      <div id="sq2" class="valueSquare"></div>
-      <div id="sq3" class="valueSquare"></div>
-      <br />
-      <div id="sq4" class="valueSquare"></div>
-      <div id="sq5" class="valueSquare"></div>
-      <div id="sq6" class="valueSquare"></div>
-      <br />
-      <div id="sq7" class="valueSquare"></div>
-      <div id="sq8" class="valueSquare"></div>
-      <div id="sq9" class="valueSquare"></div>
+    <div id="display">
+      <p><strong>Player Atual:</strong> <span id="playerScreenValue"></span></p>
     </div>
-    <input type="button" value="reset" onclick="resetValues();">
-    <p>Player Atual: <span id="playerScreenValue"></span></p>
+    <div id="paper">
+      <div id="sq1" class="valueSquare" tabindex="0"></div>
+      <div id="sq2" class="valueSquare" tabindex="1"></></div>
+      <div id="sq3" class="valueSquare" tabindex="2"></></div>
+      <br />
+      <div id="sq4" class="valueSquare" tabindex="3"></></div>
+      <div id="sq5" class="valueSquare" tabindex="4"></></div>
+      <div id="sq6" class="valueSquare" tabindex="5"></></div>
+      <br />
+      <div id="sq7" class="valueSquare" tabindex="6"></></div>
+      <div id="sq8" class="valueSquare" tabindex="7"></></div>
+      <div id="sq9" class="valueSquare" tabindex="8"></></div>
+    </div>
+    <div id="menu">
+      <input id="resetBtn" type="button" value="reset" onclick="resetValues();" tabindex="9">
+    </div>
+    <div id="modal"></div>
   </main>
 </body>
 
