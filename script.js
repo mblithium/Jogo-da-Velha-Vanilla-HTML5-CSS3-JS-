@@ -7,8 +7,10 @@ const playerScreenValue = document.body.querySelector("#playerScreenValue");
 
 function resetValues() {
   gameData.forEach((elem, index) => gameData[index] = "");
+  squares.forEach((elem, index) => {
+    squares[index].style = "background-color: #6c5ce7"
+  })
   playerScreenValue.innerHTML = "";
-  playerData.actualPlayer = ["PlayerOne", "PlayerTwo"];
   playerData.isLocked = false;
   updateScreen()
 }
@@ -30,11 +32,13 @@ function playerAction(elem, player) {
 }
 
 function verifySquare(id, player) {
+  return gameData[id] === "circle" || gameData[id] === "cross";
+  /* refactoring
   if (
     gameData[id] === "circle" || 
     gameData[id] === "cross"
   ) { return true; } 
-  else { return false; }
+  else { return false; } */
 }
 
 function changeValue(pos) {
@@ -74,57 +78,38 @@ function game() {
 
 function verifyRule(gameData) {
     const gd = gameData;
-    console.log('Esta funcionando.')
-    console.log(gd[0] == gd[1] && gd[1] == gd[2])
-  /*
-    switch (gd) {
-      case (gd[0] == gd[1] && gd[1] == gd[2]):
-        window.alert("VELHA");
-        console.log(gd);
-        break;
-      default: console.log("Nada");
-    }
-  */
-  if (gd[0] == gd[1] && gd[1] == gd[2] && gd[0] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[0])}`)
-    playerData.isLocked = true;
-  }
-  if (gd[3] == gd[4] && gd[3] == gd[5] && gd[3] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[3])}`)
-    playerData.isLocked = true;
-  }
-  if (gd[6] == gd[7] && gd[6] == gd[8] && gd[6] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[6])}`)
-    playerData.isLocked = true;
-  }
-
-  if (gd[0] == gd[3] && gd[0] == gd[6] && gd[0] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[0])}`)
-    playerData.isLocked = true;
-  }
-  if (gd[1] == gd[4] && gd[1] == gd[7] && gd[1] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[1])}`)
-    playerData.isLocked = true;
-  }
-  if (gd[2] == gd[5] && gd[2] == gd[8] && gd[2] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[2])}`)
-    playerData.isLocked = true;
-  }
-
-  if (gd[0] == gd[4] && gd[0] == gd[8] && gd[0] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[0])}`)
-    playerData.isLocked = true;
-  }
-  if (gd[2] == gd[4] && gd[2] == gd[6] && gd[2] != "") {
-    window.alert(`Velha, o jogador vencedor é ${playerConvert(gd[2])}`)
-    playerData.isLocked = true;
-  }
   
+  /* REGRAS */
+  /* Obs: criar outra forma, só que com loops... */
+  
+  // Horizontal (Linhas)
+  if (gd[0] == gd[1] && gd[1] == gd[2] && gd[0] != "") { velha(gd[0], [0, 1, 2]); }
+  if (gd[3] == gd[4] && gd[3] == gd[5] && gd[3] != "") { velha(gd[3], [3, 4, 5]); }
+  if (gd[6] == gd[7] && gd[6] == gd[8] && gd[6] != "") { velha(gd[6], [6, 7, 8]); }
+
+  // Vertical (Colunas)
+  if (gd[0] == gd[3] && gd[0] == gd[6] && gd[0] != "") { velha(gd[0], [0, 3, 6]); }
+  if (gd[1] == gd[4] && gd[1] == gd[7] && gd[1] != "") { velha(gd[1], [1, 4, 7]); }
+  if (gd[2] == gd[5] && gd[2] == gd[8] && gd[2] != "") { velha(gd[2], [2, 5, 8]); }
+
+  // Diagonal ( X )
+  if (gd[0] == gd[4] && gd[0] == gd[8] && gd[0] != "") { velha(gd[0], [0, 4, 8]); }
+  if (gd[2] == gd[4] && gd[2] == gd[6] && gd[2] != "") { velha(gd[2], [2, 4, 6]); }
 
   function playerConvert(p) {
     if (p == "cross") return "Jogador Um";
     if (p == "circle") return "Jogador Dois";
   }
+
+  function velha(player, ids) {
+    window.alert(`Velha, o jogador vencedor é ${playerConvert(player)}`);
+    ids.forEach((elem) => {
+      console.log(elem);
+      squares[elem].style = "background-color: #00b894;"
+    })
+    playerData.isLocked = true;
+  }
+  
 }
 
 
