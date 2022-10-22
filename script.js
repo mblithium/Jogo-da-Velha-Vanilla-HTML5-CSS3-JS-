@@ -7,57 +7,69 @@ const playerScreenValue = document.body.querySelector("#playerScreenValue");
 
 function resetValues() {
   gameData.forEach((elem, index) => gameData[index] = "");
-  squares.forEach((elem, index) => {
-    squares[index].style = "background-color: #6c5ce7"
-  })
+  squares.forEach((elem, index) => { squares[index].style = "background-color: #6c5ce7"; });
+  playerData.actualPlayer = ["PlayerOne", "PlayerTwo"];
   playerScreenValue.innerHTML = "";
   playerData.isLocked = false;
-  updateScreen()
+  updateScreen();
 }
 
 function addAction() {
   squares.forEach(function(elem) {
-    elem.addEventListener("click", (elem) => playerAction(elem, playerData.actualPlayer[0]))
+    elem.addEventListener("click", (elem) => playerAction(elem, playerData.actualPlayer[0]));
   })
 }
 
 function playerAction(elem, player) {
   const actPlayer = player;
   const elemId = Number(elem.target.id.slice(2)) - 1;
-  if ( !verifySquare(elemId, actPlayer) && elemId != -1 && playerData.isLocked == false) {
+  if (!verifySquare(elemId, actPlayer) && elemId != -1 && playerData.isLocked == false) {
     changeValue((elemId), (playerData.actualPlayer));
-    switchPlayer();
     verifyRule(gameData);
+    switchPlayer();
   };
 }
 
 function verifySquare(id, player) {
   return gameData[id] === "circle" || gameData[id] === "cross";
-  /* refactoring
-  if (
-    gameData[id] === "circle" || 
-    gameData[id] === "cross"
-  ) { return true; } 
-  else { return false; } */
 }
 
 function changeValue(pos) {
   const player = playerData.actualPlayer[0];
-  if (player == "PlayerOne") {
-    gameData[pos] = "cross";
-  } else if (player == "PlayerTwo") {
-    gameData[pos] = "circle";
-  }
+
+  if (player == "PlayerOne") { gameData[pos] = "cross"; }
+  else if (player == "PlayerTwo") { gameData[pos] = "circle"; }
 }
+
 function switchPlayer() {
   if (playerData.actualPlayer === "") { playerData.actualPlayer = ["PlayerOne", "PlayerTwo"]; }
   [playerData.actualPlayer[0], playerData.actualPlayer[1]] = [playerData.actualPlayer[1], playerData.actualPlayer[0]];
   updateScreen();
+  if (playerData.actualPlayer[0] === "PlayerTwo") { IABURRA(); }
+}
+
+function IABURRA() {
+  if (playerData.actualPlayer[0] == "PlayerTwo") {
+    while (true && !playerData.isLocked) {
+
+      let randnum = Math.floor(Math.random() * 8);
+      console.log(`Randnum: ${randnum}.`);
+      if (gameData[randnum] === "") {
+        gameData[randnum] = "circle";
+        verifyRule(gameData);
+        switchPlayer();
+        break;
+      }
+      // if (gdata[0].length && gdata[1].length && gdata[2].length && gdata[3].length & gdata[4].length && gdata[5].length && gdata[6].length && gdata[7].length && gdata[8].length >= 4) { }
+    }
+  }
 }
 
 function updateScreen() {
   playerScreenValue.innerHTML = playerData.actualPlayer[0].replace("Player", "Player ");
+    console.log("tuturu")
   for (i = 0; i < 9; i++) {
+    console.log("tuturu")
     switch (gameData[i]) {
       case "cross":
         squares[i].innerHTML = `<img src="${imagesPath.cross}"></img>`;
@@ -69,7 +81,6 @@ function updateScreen() {
         squares[i].innerHTML = "";
     }
   }
-   
 }
 
 function game() {
@@ -77,11 +88,11 @@ function game() {
 }
 
 function verifyRule(gameData) {
-    const gd = gameData;
-  
+  const gd = gameData;
+
   /* REGRAS */
   /* Obs: criar outra forma, só que com loops... */
-  
+
   // Horizontal (Linhas)
   if (gd[0] == gd[1] && gd[1] == gd[2] && gd[0] != "") { velha(gd[0], [0, 1, 2]); }
   if (gd[3] == gd[4] && gd[3] == gd[5] && gd[3] != "") { velha(gd[3], [3, 4, 5]); }
@@ -109,10 +120,14 @@ function verifyRule(gameData) {
     })
     playerData.isLocked = true;
   }
-  
+
+  if (gd[0] && gd[1] && gd[2] && gd[3] && gd[4] && gd[5] && gd[6] && gd[7] && gd[8] != "" && !playerData.isLocked) {
+    playerData.isLocked = true;
+    window.alert("Empatou!");
+  }
+
 }
 
-
-resetValues()
+resetValues();
 addAction();
-updateScreen()
+updateScreen();
